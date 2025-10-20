@@ -1,0 +1,35 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<h2 class="mb-3" style="color:#003366; font-weight:600;">Ваш профиль</h2>
+
+<p style="color:#333; font-weight:500;">Логин: {{ user.username }}</p>
+
+<h3 class="mt-4 mb-3" style="color:#003366; font-weight:600;">Ваши новости</h3>
+
+{% for n in user_news %}
+<div class="d-flex mb-3 border p-2 bg-white" style="border:1px solid #ccc; border-radius:5px;">
+    <div class="me-3">
+        {% if n.image %}
+            <img src="{{ n.image.url }}" alt="{{ n.title }}" style="width:150px; height:100px; object-fit:cover; border:1px solid #ccc;">
+        {% else %}
+            <img src="{% static 'news/images/default.png' %}" alt="Нет изображения" style="width:150px; height:100px; object-fit:cover; border:1px solid #ccc;">
+        {% endif %}
+    </div>
+    <div>
+        <h4 style="margin-bottom:0.5rem;">
+            <a href="{% url 'news_detail' n.id %}" style="color:#003366; text-decoration:none;">{{ n.title }}</a>
+        </h4>
+        <small style="color:#555; font-size:0.85rem;">
+            {{ n.created_at|date:"d.m.Y H:i" }} | {% if n.category %}{{ n.category.name }}{% else %}Без категории{% endif %}
+        </small>
+        <p style="color:#333; margin-top:0.5rem;">{{ n.description|truncatechars:200 }}</p>
+    </div>
+</div>
+{% empty %}
+<p style="color:#555;">Вы пока не добавили новостей.</p>
+{% endfor %}
+{% endblock %}

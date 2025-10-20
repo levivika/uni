@@ -1,0 +1,40 @@
+{% extends 'news/base.html' %}
+{% load static %}
+{% block title %}Все новости{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 text-center" style="color:#003366; font-weight:600;">
+    {% if selected_category %}
+        Новости категории: {{ selected_category.name }}
+    {% else %}
+        Все новости
+    {% endif %}
+</h2>
+
+{% for n in news_list %}
+<div class="news-item d-flex mb-3 border rounded p-3" style="background-color:#f9f9f9; border-color:#cccccc;">
+    <div class="me-3 flex-shrink-0">
+        {% if n.image %}
+            <img src="{{ n.image.url }}" alt="{{ n.title }}" style="width:150px;height:100px;object-fit:cover; border:1px solid #ccc;">
+        {% else %}
+            <img src="{% static 'news/images/default.png' %}" alt="Нет изображения" style="width:150px;height:100px;object-fit:cover; border:1px solid #ccc;">
+        {% endif %}
+    </div>
+    <div class="flex-grow-1">
+        <h4 style="margin-bottom:5px;">
+            <a href="{% url 'news_detail' n.id %}" style="color:#003366; text-decoration:none; font-weight:500;">
+                {{ n.title }}
+            </a>
+        </h4>
+        <small style="color:#555;">
+            {{ n.created_at|date:"d.m.Y H:i" }} |
+            {% if n.category %}{{ n.category.name }}{% else %}Без категории{% endif %}
+        </small>
+        <p style="margin-top:5px; color:#333;">{{ n.description|truncatechars:200 }}</p>
+    </div>
+</div>
+{% empty %}
+<p style="color:#555;">Новостей пока нет.</p>
+{% endfor %}
+{% endblock %}
+

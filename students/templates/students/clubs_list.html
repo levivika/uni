@@ -1,0 +1,32 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block title %}Клубы{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Студенческие клубы</h2>
+<a href="{% url 'add_club' %}" class="btn" style="background-color:#003366; color:#fff; font-weight:500;">Добавить клуб</a>
+<div class="row">
+    {% for club in clubs %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm">
+            {% if club.photo %}
+                <img src="{{ club.photo.url }}" class="card-img-top" alt="{{ club.name }}">
+            {% else %}
+                <img src="{% static 'news/images/default.png' %}" class="card-img-top" alt="Нет фото">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ club.name }}</h5>
+                <p>{{ club.faculty }}</p>
+                <a href="{% url 'club_detail' club.id %}" class="btn" style="background-color:#003366; color:#fff; font-weight:500;">Подробнее</a>
+                <a href="{% url 'edit_club' club.id %}" class="btn" style="background-color:#003366; color:#fff; font-weight:500;">Редактировать</a>
+                <a href="{% url 'delete_club' club.id %}" class="btn" style="background-color:#003366; color:#fff; font-weight:500;">Удалить</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+        <p>Клубов пока нет.</p>
+    {% endfor %}
+</div>
+{% endblock %}
+

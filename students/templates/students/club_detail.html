@@ -1,0 +1,28 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block title %}{{ club.name }}{% endblock %}
+
+{% block content %}
+<div class="card mb-3 shadow-sm">
+    <div class="row g-0">
+        <div class="col-md-4">
+            {% if club.photo %}
+                <img src="{{ club.photo.url }}" class="img-fluid rounded-start" alt="{{ club.name }}">
+            {% else %}
+                <img src="{% static 'news/images/default.png' %}" class="img-fluid rounded-start" alt="Нет фото">
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h4>{{ club.name }}</h4>
+                <p>Факультет: {{ club.faculty }}</p>
+                <p>{{ club.description }}</p>
+                <a href="{% url 'clubs_list' %}" class="btn" style="background-color:#003366; color:#fff; font-weight:500;">Назад к клубам</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

@@ -1,0 +1,38 @@
+{% extends 'news/base.html' %}
+{% load static %}
+{% block title %}Добавить новость{% endblock %}
+
+{% block content %}
+<h2 class="mb-4" style="color:#003366; font-weight:600;">Добавить новость</h2>
+
+<form method="POST" enctype="multipart/form-data" style="background-color:#f9f9f9; padding:20px; border:1px solid #ccc; border-radius:5px;">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label for="title" class="form-label" style="font-weight:500;">Заголовок</label>
+        <input type="text" name="title" id="title" class="form-control" placeholder="Введите заголовок" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="description" class="form-label" style="font-weight:500;">Описание</label>
+        <textarea name="description" id="description" class="form-control" rows="5" placeholder="Введите описание" required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="category" class="form-label" style="font-weight:500;">Категория</label>
+        <select name="category" id="category" class="form-select">
+            <option value="">Без категории</option>
+            {% for cat in categories %}
+            <option value="{{ cat.id }}">{{ cat.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="image" class="form-label" style="font-weight:500;">Изображение (необязательно)</label>
+        <input type="file" name="image" id="image" class="form-control">
+    </div>
+
+    <button type="submit" class="btn" style="background-color:#003366; color:#fff; font-weight:500;">Добавить новость</button>
+</form>
+{% endblock %}
