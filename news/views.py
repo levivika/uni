@@ -5,13 +5,21 @@ from django.contrib.auth.decorators import login_required
 from .models import News, Category
 
 
-
 def index(request):
-    news_list = News.objects.all().order_by('-created_at')
     categories = Category.objects.all()
+    category_id = request.GET.get('category')
+
+    if category_id:
+        news_list = News.objects.filter(category_id=category_id).order_by('-created_at')
+        selected_category = get_object_or_404(Category, id=category_id)
+    else:
+        news_list = News.objects.all().order_by('-created_at')
+        selected_category = None
+
     context = {
         'news_list': news_list,
         'categories': categories,
+        'selected_category': selected_category
     }
     return render(request, 'news/index.html', context)
 
